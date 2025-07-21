@@ -1,0 +1,26 @@
+x-base: &base
+  restart: unless-stopped
+
+services:
+  db:
+    <<: *base
+    hostname: database
+    image: postgres:11.17-alpine
+    env_file: .env
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+    ports: ["5432:5432"]
+  api:
+    <<: *base
+    hostname: api
+    build:
+      context: ./server
+      dockerfile: dockerfile
+    ports: ["5000:5000"]
+    volumes:
+      - ${PWD}/server:/server:rw
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

@@ -1,0 +1,224 @@
+Prompt 1 (21/07/2025):
+Write each prompt I send to you into a file prompts.txt, so I can audit the work.
+
+Prompt 2 (21/07/2025):
+Lets make the models for the project, we are using FASTAPI. 
+Will be just 2 tables on database. 1 Polls that are the Voting choices and the Votes
+1. Polls (id, created at, name, choices json, description )
+2. Voting (id, identifier (IP or email), choice, poll_id )
+
+Write the model. Dont forget to save on prompts.txt
+
+Prompt 3 (21/07/2025):
+Lets write on schhemas now. The schemas for Votes and Poll. And i changed the name from voting for Vote.
+
+Prompt 4 (21/07/2025):
+Ok. Now lets do the Routes. 
+
+Just few routes. 
+Create Poll - Need Name, Choices e description is optional. 
+Get Poll
+Get All Polls
+Update Poll - Just Description and Choices. 
+Delete Poll
+
+Prompt 5 (21/07/2025):
+update the schemas, send the schemas from poll routes to schemas folder
+
+Prompt 6 (21/07/2025):
+Ok, lets do the same for vote
+get result -> return the number of votes of each poll for each choice, choise1 - 200, choise2-300 ....
+post vote -> sent json identifier, choice to /vote/poll_id
+
+Prompt 7 (21/07/2025):
+ok. now in main.py, add the routes in include_router. the ping route is already there, copy
+
+Prompt 8 (21/07/2025):
+Make 3 requests for me in postman.
+1. create poll
+2. vote for poll
+3. get poll results 
+
+Exemplo de requisições para Postman:
+1. Criar Poll (POST)
+URL: http://localhost:5000/polls
+Body (JSON):
+{
+  "name": "Qual sua linguagem favorita?",
+  "choices": ["Python", "JavaScript", "Go"],
+  "description": "Escolha uma das opções"
+}
+
+2. Votar no Poll (POST)
+URL: http://localhost:5000/vote/1
+Body (JSON):
+{
+  "identifier": "user@email.com",
+  "choice": "Python",
+  "poll_id": 1
+}
+
+3. Obter resultados do Poll (GET)
+URL: http://localhost:5000/vote/result/1
+Body: (nenhum, método GET)
+
+Prompt 9 (21/07/2025):
+ok. Now write for me on tests the same of postman
+1. get on /ping http://localhost:5000/ping, check if is 200
+2. post on http://localhost:5000/polls, this json
+{
+  "name": "Qual sua linguagem favorita?2",
+  "choices": ["Python", "JavaScript", "Go"],
+  "description": ""
+}
+Check if is 200
+3.post vote on http://localhost:5000/vote/1, check if is 200. 
+4. get on http://localhost:5000/vote/result/1, check if is 200 and the json have "Python" as Key
+
+Write on  test/main.py. Not use pytest, just a script that make this 4 requests in order and print True True True True
+
+Prompt 10 (21/07/2025):
+lets make another route. That will be asking for results of poll 
+@vote_router.get("/vote/result/{poll_id}")
+def get_result(poll_id: int) -> Dict[str, int]:
+    result = {}
+    for v in votes_db:
+        if v["poll_id"] == poll_id:
+            result[v["choice"]] = result.get(v["choice"], 0) + 1
+    return result
+
+But the identifier of user needs to be distinct, because now is counting twice for same user if voted twice
+
+Prompt 11 (21/07/2025):
+Not worked, the identificer is always the same. need to cound only once for each identifier
+{
+  "identifier": "user@email.com",
+  "choice": "Python",
+  "poll_id": 1
+}
+
+Prompt 12 (21/07/2025):
+ok. lets make a basic front using nextjs for that. 
+On client folder lets start a nextjs app. With Tailwind 
+3 pages. 
+1. Homepage - list of all polls
+2. Create Poll page
+3. Voting page, when on homepage clicks on poll, send to a page that can vote on poll
+
+Prompt 13 (21/07/2025):
+Make the services that runs these tests
+
+import requests
+
+base_url = "http://localhost:5000"
+
+# 1. Teste /ping
+r1 = requests.get(f"{base_url}/ping")
+print(r1.status_code == 200)
+
+# 2. Teste POST /polls
+poll_data = {
+    "name": "Qual sua linguagem favorita?2",
+    "choices": ["Python", "JavaScript", "Go"],
+    "description": "",
+}
+r2 = requests.post(f"{base_url}/polls", json=poll_data)
+print(r2.status_code == 200)
+
+# 3. Teste POST /vote/1
+vote_data = {"identifier": "user@email.com", "choice": "Python", "poll_id": 1}
+r3 = requests.post(f"{base_url}/vote/1", json=vote_data)
+print(r3.status_code == 200)
+
+# 4. Teste GET /vote/result/1
+r4 = requests.get(f"{base_url}/vote/result/1")
+result_json = r4.json()
+print(r4.status_code == 200 and "Python" in result_json)
+
+
+1. create poll
+2. Vote for poll
+3. get all polls
+4. Update poll
+On service.ts folder
+
+Prompt 14 (21/07/2025):
+Write home.tsx
+Is not working. 
+Service is already implemented, make a list of polls and the header is just the writen Voting
+
+Prompt 15 (21/07/2025):
+Global CSS cannot be imported from files other than your Custom <App>. Due to the Global nature of stylesheets, and to avoid conflicts, Please move all first-party global CSS imports to pages/_app.js. Or convert the import to Component-Level CSS (CSS Modules).
+
+Prompt 16 (21/07/2025):
+Build Error
+
+It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
+
+Prompt 17 (21/07/2025):
+✓ Starting...
+ ✓ Ready in 1856ms
+ ○ Compiling /home ...
+ ⨯ ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[7].oneOf[13].use[1]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[7].oneOf[13].use[2]!./styles/global.css
+Error: It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration.
+Import trace for requested module:
+./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[7].oneOf[13].use[1]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[7].oneOf[13].use[2]!./styles/global.css
+./styles/global.css
+Could not find files for /_error in .next/build-manifest.json
+Could not find files for /_error in .next/build-manifest.json
+ GET /_next/static/webpack/1d559e80c10e5208.webpack.hot-update.json 404 in 839ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /home 500 in 528ms
+
+Prompt 18 (21/07/2025):
+The poll card needs to be a button. ANd send to vote page. on 
+Vote [id]
+
+Prompt 19 (21/07/2025):
+Global CSS cannot be imported from files other than your Custom <App>. Due to the Global nature of stylesheets, and to avoid conflicts, Please move all first-party global CSS imports to pages/_app.js. Or convert the import to Component-Level CSS (CSS Modules).
+
+Prompt 20 (21/07/2025):
+Ok. now Write the Voting page. 
+http://localhost:3000/vote/1
+The voting page needs to be just a card with the options
+
+Prompt 21 (21/07/2025):
+http://localhost:3000/vote/1
+is 
+404 This page could not be found.
+
+Prompt 22 (21/07/2025):
+1/1
+
+Next.js 15.4.2
+Webpack
+Build Error
+
+Module not found: Can't resolve '../../styles/global.css'
+
+Prompt 23 (21/07/2025):
+How to solve? And solve. We are almost finishing
+
+Prompt 24 (21/07/2025):
+ok. Now add a button on top of list on Home
+Create New Poll
+Will send to create page. The create page need to have just a form with 
+Name
+Choices
+Description
+
+Prompt 25 (21/07/2025):
+Ok. lets add Tailwind css in everything. Make it beaultiful 
+1. The list on home need to be nice cards. With padding and margin
+2. The voting need to be an button option
+3. And the creation needs to be a beaultful form
+4. Show the current results on list of Polls.
+
+Prompt 26 (21/07/2025):
+Tailwind not applying. How can I apply
+
+Prompt 27 (21/07/2025):
+Make tailwind works on the project, because are too ugly. Apply just the basics to project. Verify If i put the css on files. if not do it yourself.
+
+did not changed anything. Please apply css on the project, go to the 3 pages and apply css tailwind
+

@@ -1,0 +1,115 @@
+Certainly! Below is the suggested initial structure for your Next.js project with Tailwind CSS:
+
+```
+client/
+├── pages/
+│   ├── index.tsx         # Homepage - lista de polls
+│   ├── create.tsx        # Página de criação de poll
+│   └── vote/[id].tsx     # Página de votação
+├── styles/
+│   └── globals.css       # Tailwind
+├── tailwind.config.js
+├── postcss.config.js
+├── package.json
+```
+
+### File: `client/pages/index.tsx`
+```tsx
+// Homepage - lista de polls
+export default function Home() {
+  return (
+    <div>
+      <h1 className="text-3xl font-bold">Lista de Polls</h1>
+      {/* Adicione aqui a lógica para listar os polls */}
+    </div>
+  );
+}
+```
+
+### File: `client/pages/create.tsx`
+```tsx
+// Página de criação de poll
+export default function CreatePoll() {
+  return (
+    <div>
+      <h1 className="text-3xl font-bold">Criar Poll</h1>
+      {/* Adicione aqui o formulário para criação de poll */}
+    </div>
+  );
+}
+```
+
+### File: `client/pages/vote/[id].tsx`
+```tsx
+// Página de votação
+import { useRouter } from 'next/router';
+
+export default function Vote() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  return (
+    <div>
+      <h1 className="text-3xl font-bold">Votar no Poll {id}</h1>
+      {/* Adicione aqui a lógica para votação */}
+    </div>
+  );
+}
+```
+
+### File: `client/styles/globals.css`
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Adicione aqui estilos globais adicionais */
+```
+
+### File: `client/tailwind.config.js`
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+### File: `client/postcss.config.js`
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+```
+
+### File: `client/package.json`
+```json
+{
+  "name": "client",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwindcss": "latest",
+    "postcss": "latest",
+    "autoprefixer": "latest"
+  }
+}
+```
+
+Com essa estrutura, você terá uma boa base para começar a desenvolver seu aplicativo Next.js com Tailwind CSS. Lembre-se de instalar as dependências necessárias executando `npm install` ou `yarn` no diretório do seu projeto.
